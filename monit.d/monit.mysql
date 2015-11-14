@@ -1,0 +1,6 @@
+check process mysql with pidfile /vol2/mysql_db/vasgtw.mms.project4.pl.pid
+    group database
+    start program = "/opt/lampp/lampp startmysql"
+    stop program  = "/opt/lampp/lampp stopmysql"
+if failed host localhost port 3306 protocol mysql then alert
+if 5 restarts within 5 cycles then timeout

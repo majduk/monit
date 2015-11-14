@@ -1,0 +1,14 @@
+###############################################################################
+## Services
+###############################################################################
+##
+## Check the general system resources such as load average, cpu and memory
+## usage. Each rule specifies the tested resource, the limit and the action
+## which will be performed in the case that the test failed.
+#
+check system vasgtw.mms.project4.pl
+    if loadavg (1min) > 100 then alert
+    if loadavg (5min) > 80 then alert
+    if memory usage > 85% then alert
+if 5 restarts within 5 cycles then timeout
+

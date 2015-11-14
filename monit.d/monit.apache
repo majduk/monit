@@ -1,0 +1,8 @@
+ check process apache with pidfile /opt/lampp/logs/httpd.pid 
+   group apache
+    start program = "/opt/lampp/lampp startapache"
+    stop program  = "/opt/lampp/lampp stopapache"
+   if failed host 127.0.0.1 port 80 
+        protocol HTTP request /index.html then alert
+   if 5 restarts within 5 cycles then timeout
+

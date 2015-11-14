@@ -1,0 +1,30 @@
+set daemon  20
+set logfile syslog facility log_daemon
+#set logfile /var/log/monit.log 
+set mailserver 10.10.23.190 PORT 25 
+set eventqueue
+     basedir /var/monit  # set the base directory where events will be stored
+     slots 100           # optionaly limit the queue size
+
+set alert 48792237027@vasgtw with
+mail-format {
+   from: monit@vasgtw
+   subject: VASGW $SERVICE $EVENT at $DATE
+   message: VASGW $SERVICE $EVENT at $DATE
+}
+
+set alert root@vasgtw with
+mail-format {
+   from: monit@vasgtw
+   subject: VASGW $SERVICE $EVENT at $DATE
+   message: VASGW $SERVICE $EVENT at $DATE
+}
+
+
+set httpd port 2812 and
+#     use address localhost  # only accept connection from localhost
+#     allow localhost        # allow localhost to connect to the server and
+     allow admin:monit      # require user 'admin' with password 'monit'
+
+      
+include /etc/monit.d/*

@@ -1,0 +1,4 @@
+http://localhost/monit1/_status?format=text&level=summary
+http://localhost/monit1/_status?format=text&level=full
+
+http://localhost/monit1/_status?format=xml
