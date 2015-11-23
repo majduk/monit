@@ -1,0 +1,12 @@
+check process logstash with pidfile /var/run/logstash.pid
+   group logstash
+    start program = "/etc/init.d/logstash start" with timeout 30 seconds
+    stop program  = "/etc/init.d/logstash stop" with timeout 30 seconds
+   if 2 restarts within 2 cycles then timeout
+   depends on logstash.conf
+
+ check file logstash.conf with path /etc/logstash/conf.d/logstash.conf
+   group logstash
+   if changed checksum
+        then exec "/usr/bin/monit restart logstash"
+
