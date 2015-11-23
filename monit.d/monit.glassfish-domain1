@@ -1,0 +1,8 @@
+ check process glassfish-domain1 with pidfile /var/run/glassfish-domain1.pid
+   group app
+    start program = "/etc/init.d/glassfish-domain1 start" with timeout 120 seconds
+    stop program  = "/etc/init.d/glassfish-domain1 stop" with timeout 120 seconds
+   if failed host 127.0.0.1 port 8080
+        protocol HTTP request / then restart
+   if 2 restarts within 3 cycles then timeout
+   #depends on mysql,shared-data
