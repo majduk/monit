@@ -1,16 +1,16 @@
 set daemon  20
 set logfile syslog facility log_daemon
 #set logfile /var/log/monit.log 
-set mailserver 10.10.23.190 PORT 25 
+set mailserver smtp.example.com PORT 25 
 set eventqueue
      basedir /var/monit  # set the base directory where events will be stored
      slots 100           # optionaly limit the queue size
 
-set alert 48792237027@vasgtw with
+set alert root@example.com with
 mail-format {
-   from: monit@vasgtw
-   subject: VASGW $SERVICE $EVENT at $DATE
-   message: VASGW $SERVICE $EVENT at $DATE
+   from: monit@example.com
+   subject: Server $SERVICE $EVENT at $DATE
+   message: Server $SERVICE $EVENT at $DATE
 }
 
 set alert root@vasgtw with
