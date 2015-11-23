@@ -1,0 +1,13 @@
+ #Monitoring of LVS - Linux Virtual Server with Piranha GUI
+ 
+ check process pulse with pidfile /var/run/pulse.pid
+   group lvs
+    start program = "/etc/init.d/pulse start"
+    stop program  = "/etc/init.d/pulse stop"
+   if 5 restarts within 5 cycles then timeout
+
+ check process piranha-gui with pidfile /var/run/piranha-httpd.pid
+   group lvs
+    start program = "/etc/init.d/piranha-gui start"
+    stop program  = "/etc/init.d/piranha-gui stop"
+   if 5 restarts within 5 cycles then timeout
