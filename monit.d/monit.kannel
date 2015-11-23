@@ -1,15 +1,22 @@
-check process bearerbox with pidfile /var/lock/kannel/bearerbox.pid
+check file kannel.conf
+     with path /etc/kannel.conf
+     if changed checksum
+        then exec "/usr/bin/monit restart bearerbox"
+    
+
+check process bearerbox with pidfile /var/run/bearerbox.pid
     group kannel
-    start program = "/usr/local/sbin/kannel_deamon.sh startbearerbox"
-    stop program  = "/usr/local/sbin/kannel_deamon.sh stopbearerbox"
+    start program = "/etc/init.d/kannel start bearerbox"
+    stop program  = "/etc/init.d/kannel stop bearerbox"
 if failed host 127.0.0.1 port 13000 then alert
 if failed host 127.0.0.1 port 13001 then alert
 if 5 restarts within 5 cycles then timeout
+    depends on kannel.conf
 
-check process smsbox1 with pidfile /var/lock/kannel/smsbox1.pid
+check process smsbox with pidfile /var/run/smsbox.pid
     group kannel
-    start program = "/usr/local/sbin/kannel_deamon.sh startsms1"
-    stop program  = "/usr/local/sbin/kannel_deamon.sh stopsms1"
+    start program = "/etc/init.d/kannel start smsbox"
+    stop program  = "/etc/init.d/kannel stop smsbox"
 if failed host 127.0.0.1 port 13001 then alert
 if failed host 127.0.0.1 port 13013 then alert
 if 5 restarts within 5 cycles then timeout
