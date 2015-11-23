@@ -1,0 +1,47 @@
+###############################################################################
+## Services
+###############################################################################
+ check process cman with pidfile /var/run/cman.pid
+   group cluster
+    start program = "/etc/init.d/cman start"
+    stop program  = "/etc/init.d/cman stop"
+   if 5 restarts within 5 cycles then timeout
+
+ check process clvmd with pidfile /var/run/clvmd.pid
+   group cluster
+    start program = "/etc/init.d/clvmd start"
+    stop program  = "/etc/init.d/clvmd stop"
+   depends on cman
+   if 5 restarts within 5 cycles then timeout
+
+ check process fenced with pidfile /var/run/fenced.pid
+   group cluster
+   depends on cman
+   if 5 restarts within 5 cycles then timeout
+
+ check process dlm_controld with pidfile /var/run/dlm_controld.pid
+   group cluster
+   depends on cman
+   if 5 restarts within 5 cycles then timeout
+
+ check process gfs_controld with pidfile /var/run/gfs_controld.pid
+   group cluster
+   depends on cman
+   if 5 restarts within 5 cycles then timeout
+
+ check filesystem shared-data with path /dev/sdb7
+ group cluster
+ start = "/bin/mount /dev/sdb7 /data/shared"
+ stop = "/bin/umount /dev/sdb7"
+
+  if space usage > 80% for 5 times within 15 cycles
+     then alert else if succeeded for 10 cycles then alert
+  if space usage > 90% for 5 cycles
+     then alert else if succeeded for 10 cycles then alert
+  if space usage > 99%
+     then alert else if succeeded for 10 cycles then alert
+  if 5 restarts within 5 cycles then timeout
+ depends on cman
+ depends on clvmd
+ depends on gfs_controld
+ depends on dlm_controld
