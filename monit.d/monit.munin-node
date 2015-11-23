@@ -1,0 +1,10 @@
+check process munin-node with pidfile /var/run/munin/munin-node.pid
+    start program = "/etc/init.d/munin-node start" with timeout 30 seconds
+    stop program  = "/etc/init.d/munin-node stop" with timeout 30 seconds
+   if 2 restarts within 2 cycles then timeout
+   depends on munin-node.conf
+
+ check file munin-node.conf with path /etc/munin/munin-node.conf
+   if changed checksum
+        then exec "/usr/bin/monit munin-node"
+
